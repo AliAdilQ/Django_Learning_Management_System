@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="DATA SCIENCE course illustration">
+    <rect width="640" height="360" fill="#d7e5ec"/>
+    <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#567687" stroke-opacity=".06"/></pattern></defs><rect width="640" height="360" fill="url(#grid)"/>
+    <circle cx="306" cy="122" r="126" fill="none" stroke="#567687" stroke-opacity=".12"/>
+    <g transform="translate(2 14)"><g transform="translate(196 43) rotate(-6 100 80)"><rect width="218" height="156" rx="13" fill="#f7fafb" stroke="#b4cbd6"/><path d="M30 30v100h160" fill="none" stroke="#acc4d0" stroke-width="2"/><rect x="51" y="89" width="25" height="40" rx="4" fill="#90acb9"/><rect x="89" y="64" width="25" height="65" rx="4" fill="#6c93a4"/><rect x="127" y="39" width="25" height="90" rx="4" fill="#355f70"/><path d="M52 71l48-29 51-19" stroke="#d69e69" stroke-width="4" fill="none"/><circle cx="52" cy="71" r="5" fill="#d69e69"/><circle cx="100" cy="42" r="5" fill="#d69e69"/><circle cx="151" cy="23" r="5" fill="#d69e69"/></g></g>
+    <text x="32" y="283" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" fill="#567687" opacity=".8">05 / MAKE DATA MEANINGFUL</text>
+    <text x="32" y="322" font-family="Arial,sans-serif" font-size="27" font-weight="bold" letter-spacing="-.5" fill="#567687">DATA SCIENCE</text>
+    <path d="M567 54v32m-16-16h32m-27-11 22 22m-22 0 22-22" stroke="#567687" stroke-opacity=".6" stroke-width="4"/>
+    <text x="556" y="320" font-family="Arial,sans-serif" font-size="12" fill="#567687" opacity=".5">luma.</text></svg>

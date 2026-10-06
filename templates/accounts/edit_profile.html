@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Edit your profile · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container section form-section">
+    <div class="form-shell">
+      <span class="eyebrow">MAKE IT YOURS</span>
+      <h1>Edit your profile.</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include "includes/form_fields.html" with form=user_form %}
+        {% include "includes/form_fields.html" with form=profile_form %}
+        <button class="btn btn-primary" type="submit">Save profile ↗</button>
+        <a class="btn btn-outline-primary" href="{% url 'accounts:profile' %}">Cancel</a>
+      </form>
+    </div>
+  </section>
+{% endblock %}

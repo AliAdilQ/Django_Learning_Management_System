@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}About this project · Luma Learning{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">BUILT WITH CURIOSITY</span>
+      <h1>
+        Thoughtful learning.
+        <br>
+        <span class="serif-accent">Purposeful code.</span>
+      </h1>
+      <p>Luma is a complete Django Learning Management System, created by AliAdilQ as a portfolio project.</p>
+    </div>
+  </section>
+  <section class="container section">
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <h2>
+          A working platform, from first
+          <br>
+          lesson to final feedback.
+        </h2>
+        <p class="section-intro">This project brings together the everyday parts of an online classroom: discovery, course delivery, progress, assignments, quizzes, and instructor tools.</p>
+        <p>Students can follow a curriculum, save lesson progress, submit private assignments, and review courses. Instructors build their own courses and give feedback. Administrators manage the platform through Django's configured admin interface.</p>
+        <p>Built with Python, Django, SQLite, Bootstrap 5, and vanilla JavaScript, the project focuses on clear code, accessible interfaces, and careful permissions. The fictional brand, sample courses, accounts, reviews, and activity are for demonstration. Luma is not a commercial learning provider, and its sample lessons are not accredited courses.</p>
+        <a class="btn btn-primary mt-3"
+           href="https://github.com/AliAdilQ/Django_Learning_Management_System">View the GitHub project ↗</a>
+      </div>
+      <div class="col-lg-5">
+        <div class="panel about-panel">
+          <span class="big-spark">✳</span>
+          <h3>Made to be explored.</h3>
+          <p>Read the source, try a demo account, or follow a lesson. Every screen is part of a working application.</p>
+          <div class="tag-list">
+            <span>Python</span>
+            <span>Django</span>
+            <span>SQLite</span>
+            <span>Bootstrap 5</span>
+            <span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

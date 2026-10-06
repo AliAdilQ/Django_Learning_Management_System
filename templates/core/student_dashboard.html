@@ -1,0 +1,198 @@
+{% extends "core/dashboard_base.html" %}
+
+{% load static %}
+
+{% block title %}Your learning dashboard · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <div class="dashboard-heading">
+    <div>
+      <span class="eyebrow">YOUR NEXT CHAPTER</span>
+      <h1>
+        Keep growing, {{ user.first_name|default:user.username }}<span class="welcome-spark">✳</span>
+      </h1>
+      <p>A little progress today. A world of possibilities tomorrow.</p>
+    </div>
+    <a class="btn btn-outline-primary" href="{% url 'courses:list' %}">Explore courses ↗</a>
+  </div>
+  <div class="stat-cards">
+    <div class="stat-card">
+      <span class="stat-icon sage">▤</span>
+      <span>Enrolled courses</span>
+      <strong>{{ stats.enrolled|stringformat:'02d' }}</strong>
+      <small>Your learning collection</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon peach">✓</span>
+      <span>Completed lessons</span>
+      <strong>{{ stats.completed|stringformat:'02d' }}</strong>
+      <small>Small wins that add up</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon lavender">□</span>
+      <span>Pending assignments</span>
+      <strong>{{ stats.pending|stringformat:'02d' }}</strong>
+      <small>Put your skills to work</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon yellow">◈</span>
+      <span>Quiz attempts</span>
+      <strong>{{ stats.attempts|stringformat:'02d' }}</strong>
+      <small>See what you've learned</small>
+    </div>
+  </div>
+  <div class="dashboard-columns">
+    <div>
+      <div class="section-heading small-heading">
+        <div>
+          <span class="eyebrow">PICK UP WHERE YOU LEFT OFF</span>
+          <h2>Continue your journey</h2>
+        </div>
+        <a class="text-link" href="#my-courses">My courses ↗</a>
+      </div>
+      {% for enrollment in recent_enrollments %}
+        <article class="continue-card">
+          {% with course=enrollment.course %}
+            {% if course.thumbnail %}
+              <img src="{{ course.thumbnail.url }}"
+                   alt="{{ course.title }} course cover">
+            {% else %}
+              {% with art="images/courses/"|add:course.artwork|add:"-compact.svg" %}
+                <img src="{% static art %}" alt="{{ course.category.name }} course cover">
+              {% endwith %}
+            {% endif %}
+            <div class="continue-content">
+              <span class="eyebrow">{{ course.category.name }}</span>
+              <h3>
+                <a href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+              </h3>
+              <p>{{ course.instructor.display_name }}</p>
+              <div class="progress-label">
+                <span>Your progress</span>
+                <strong>{{ enrollment.progress }}%</strong>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width:{{ enrollment.progress }}%"></div>
+              </div>
+              <a class="text-link" href="{{ course.get_absolute_url }}">Continue learning ↗</a>
+            </div>
+          {% endwith %}
+        </article>
+      {% empty %}
+        <div class="empty-state">
+          <h3>Your next chapter awaits.</h3>
+          <p>No courses enrolled yet. Find a topic that sparks your curiosity.</p>
+          <a class="btn btn-primary" href="{% url 'courses:list' %}">Find a course ↗</a>
+        </div>
+      {% endfor %}
+      <div class="panel mt-4">
+        <div class="section-heading small-heading">
+          <h2>Recent quiz results</h2>
+          <a class="text-link" href="{% url 'quizzes:list' %}">All results ↗</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table modern-table">
+            <thead>
+              <tr>
+                <th>Knowledge check</th>
+                <th>Score</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for attempt in attempts %}
+                <tr>
+                  <td>
+                    <a href="{% url 'quizzes:result' attempt.pk %}">{{ attempt.quiz.title }}</a>
+                    <small>{{ attempt.submitted_at|date:'M j, Y' }}</small>
+                  </td>
+                  <td>
+                    <strong>{{ attempt.percentage }}%</strong>
+                  </td>
+                  <td>
+                    <span class="badge-status {% if attempt.passed %}success{% else %}warning{% endif %}">
+                      {% if attempt.passed %}Passed{% else %}Try again{% endif %}
+                    </span>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="3" class="empty-cell">Your first quiz result will appear here.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="daily-note">
+        <span class="eyebrow">YOUR REMINDER FOR TODAY</span>
+        <h3>
+          Great things grow
+          <br>
+          one step at a time.
+        </h3>
+        <span aria-hidden="true">✳</span>
+      </div>
+      <div class="panel mt-4">
+        <div class="section-heading small-heading">
+          <h2>Coming up</h2>
+          <span class="pill">{{ stats.pending }}</span>
+        </div>
+        {% for assignment in pending %}
+          <a class="deadline-item"
+             href="{% url 'assignments:detail' assignment.pk %}">
+            <span class="date-box">
+              <strong>{{ assignment.due_date|date:'d' }}</strong>{{ assignment.due_date|date:'M' }}</span>
+            <div>
+              <strong>{{ assignment.title }}</strong>
+              <small>{{ assignment.course.title }}</small>
+              <span class="badge-status warning">Not submitted</span>
+            </div>
+          </a>
+        {% empty %}
+          <div class="empty-state small-empty">You're all caught up. Nicely done.</div>
+        {% endfor %}
+        <a class="text-link" href="{% url 'assignments:list' %}">All assignments ↗</a>
+      </div>
+      <div class="panel mt-4">
+        <h2 class="panel-title">From your instructors</h2>
+        {% for announcement in announcements %}
+          <div class="announcement compact-announcement">
+            <span class="eyebrow">{{ announcement.course.title }}</span>
+            <h3>{{ announcement.title }}</h3>
+            <p>{{ announcement.content|truncatewords:24 }}</p>
+            <small>{{ announcement.created_at|date:'M j' }}</small>
+          </div>
+        {% empty %}
+          <p class="text-muted">Course announcements will appear here.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <section id="my-courses" class="mt-5">
+    <div class="section-heading small-heading">
+      <h2>My learning collection</h2>
+      <span>{{ stats.enrolled }} courses</span>
+    </div>
+    <div class="row g-3">
+      {% for enrollment in enrollments %}
+        <div class="col-md-6 col-xl-4">
+          <a class="learning-tile" href="{{ enrollment.course.get_absolute_url }}">
+            <span class="eyebrow">{{ enrollment.course.category.name }}</span>
+            <h3>{{ enrollment.course.title }}</h3>
+            <div class="progress-label">
+              <span>{{ enrollment.progress }}% complete</span>
+              <span>↗</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" style="width:{{ enrollment.progress }}%"></div>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <p>No courses enrolled yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

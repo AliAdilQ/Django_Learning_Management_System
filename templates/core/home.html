@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">
+          <span class="status-dot"></span> A NEW CHAPTER STARTS HERE</span>
+        <h1>
+          Learn without
+          <br>
+          <span class="serif-accent">limits.</span>
+          <span class="hero-spark" aria-hidden="true">✳</span>
+        </h1>
+        <p>Big ideas start with a little curiosity. Build real skills in code, data, and AI — one inspiring lesson at a time.</p>
+        <div class="hero-actions">
+          <a href="{% url 'courses:list' %}" class="btn btn-primary">Explore courses <span>↗</span>
+          </a>
+          <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary">Start learning</a>
+        </div>
+        <div class="hero-social">
+          <div class="avatar-stack">
+            <span class="avatar peach">AK</span>
+            <span class="avatar lavender">JL</span>
+            <span class="avatar sage">MR</span>
+          </div>
+          <div>
+            <strong>A community of curious minds</strong>
+            <small>Practical lessons. Meaningful progress.</small>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual"
+           aria-label="Illustration of an interactive learning workspace">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <span class="floating-star star-one">✦</span>
+        <span class="floating-star star-two">✳</span>
+        <div class="visual-label">
+          <span class="status-dot"></span> YOUR POTENTIAL, UNLOCKED
+        </div>
+        <div class="workspace-card">
+          <div class="workspace-top">
+            <span>
+              <i>
+              </i>
+              <i>
+              </i>
+              <i>
+              </i>
+            </span>
+            <small>your next big idea.py</small>
+            <span>↗</span>
+          </div>
+          <div class="code-window">
+            <div class="line-numbers">
+              01
+              <br>
+              02
+              <br>
+              03
+              <br>
+              04
+              <br>
+              05
+              <br>
+              06
+            </div>
+            <div class="code-lines">
+              <span class="code-comment"># A little progress, every day</span>
+              <br>
+              <span class="code-purple">def</span>
+              <span class="code-yellow">build_your_future</span>():
+              <br>
+              &nbsp;&nbsp;curiosity = <span class="code-green">True</span>
+              <br>
+              &nbsp;&nbsp;<span class="code-purple">while</span> curiosity:
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;learn.<span class="code-yellow">something_new</span>()
+              <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;you.<span class="code-yellow">grow</span>()
+            </div>
+          </div>
+          <div class="workspace-bottom">
+            <span class="code-green">●</span> Ready for your next chapter <span>Python 3</span>
+          </div>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon">✓</span>
+          <div>
+            <strong>Small steps. Big possibilities.</strong>
+            <small>Lesson complete — keep going!</small>
+            <div class="progress">
+              <div class="progress-bar" style="width:75%"></div>
+            </div>
+          </div>
+          <span class="achievement-percent">75%</span>
+        </div>
+        <div class="floating-topic">
+          <span>✧</span>
+          <div>
+            <strong>Made for the curious</strong>
+            <small>Code · Create · Discover</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="stats-strip">
+    <div class="container stats-grid">
+      <div>
+        <strong>{{ stats.courses|stringformat:'02d' }}<span>+</span>
+        </strong>
+        <small>Courses to explore</small>
+      </div>
+      <div>
+        <strong>{{ stats.students|stringformat:'02d' }}</strong>
+        <small>Demo learners</small>
+      </div>
+      <div>
+        <strong>{{ stats.instructors|stringformat:'02d' }}</strong>
+        <small>Course instructors</small>
+      </div>
+      <div>
+        <strong>{{ stats.lessons }}<span>+</span>
+        </strong>
+        <small>Bite-sized lessons</small>
+      </div>
+    </div>
+  </section>
+  <section class="container section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">PICK YOUR NEXT POSSIBILITY</span>
+        <h2>
+          Good things begin with
+          <br>
+          a great course.
+        </h2>
+      </div>
+      <a class="text-link" href="{% url 'courses:list' %}">View all courses <span>↗</span>
+      </a>
+    </div>
+    <div class="row g-4">
+      {% for course in featured %}
+        <div class="col-md-6 col-lg-4">{% include "includes/course_card.html" %}</div>
+      {% empty %}
+        <div class="empty-state">Courses are on the way. Check back soon.</div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="category-section">
+    <div class="container section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">FOLLOW YOUR CURIOSITY</span>
+          <h2>A world of things to learn.</h2>
+        </div>
+        <a class="text-link" href="{% url 'courses:categories' %}">All categories ↗</a>
+      </div>
+      <div class="category-grid">
+        {% for category in categories %}
+          <a class="category-tile"
+             href="{% url 'courses:list' %}?category={{ category.slug }}">
+            <span class="category-symbol symbol-{{ forloop.counter }}">
+              {% if category.icon == "code-slash" %}⌘{% elif category.icon == "cpu" %}◈{% elif category.icon == "globe" %}◎{% elif category.icon == "bar-chart" %}▥{% elif category.icon == "stars" %}✧{% else %}☷{% endif %}
+            </span>
+            <strong>{{ category.name }}</strong>
+            <small>{{ category.course_count }} course{{ category.course_count|pluralize }} <span>↗</span>
+            </small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="container section why-grid">
+    <div class="why-illustration">
+      <span class="eyebrow">THE BEST INVESTMENT? YOU.</span>
+      <div class="big-spark">✳</div>
+      <div class="note-card">
+        <span>01 / KEEP GROWING</span>
+        <h3>
+          You don't have to
+          <br>
+          know it all.
+          <br>
+          <em>Just start.</em>
+        </h3>
+      </div>
+      <div class="note-sticker">
+        A little
+        <br>
+        every day ↗
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">LEARNING, WITH YOU IN MIND</span>
+      <h2>
+        More than lessons.
+        <br>
+        A way forward.
+      </h2>
+      <p class="section-intro">Turn “I've always wanted to” into “look what I made.” A thoughtful learning experience from your first lesson to your next breakthrough.</p>
+      <div class="benefit">
+        <span>01</span>
+        <div>
+          <h3>Build skills by doing</h3>
+          <p>Practical assignments help connect new ideas to real projects.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <span>02</span>
+        <div>
+          <h3>Find your own rhythm</h3>
+          <p>Bite-sized lessons and saved progress make it easy to keep going.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <span>03</span>
+        <div>
+          <h3>See how far you've come</h3>
+          <p>Quiz results and instructor feedback turn effort into insight.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="container section pt-0">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">THE COMMUNITY'S PICKS</span>
+        <h2>A little inspiration for your next step.</h2>
+      </div>
+      <a class="text-link" href="{% url 'courses:list' %}?sort=popular">Popular courses ↗</a>
+    </div>
+    <div class="row g-4">
+      {% for course in popular %}
+        <div class="col-md-6 col-lg-4">{% include "includes/course_card.html" %}</div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="testimonial-section">
+    <div class="container section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">VOICES FROM THE DEMO COMMUNITY</span>
+          <h2>Small lessons. Lasting impressions.</h2>
+        </div>
+        <span class="muted-note">Illustrative student reviews</span>
+      </div>
+      <div class="row g-4">
+        {% for review in testimonials %}
+          <div class="col-md-4">
+            <article class="testimonial">
+              <div class="stars" aria-label="{{ review.rating }} stars">★★★★★</div>
+              <blockquote>
+                “{{ review.text }}”
+              </blockquote>
+              <div class="d-flex align-items-center gap-3">
+                <span class="avatar peach">{{ review.student.initials }}</span>
+                <div>
+                  <strong>{{ review.student.display_name }}</strong>
+                  <small>{{ review.course.title }}</small>
+                </div>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="container section">
+    <div class="cta-banner">
+      <div>
+        <span class="eyebrow">YOUR NEXT CHAPTER IS WAITING</span>
+        <h2>Curiosity looks good on you.</h2>
+        <p>Make a little room for something new. Your first lesson is just a click away.</p>
+      </div>
+      <a href="{% url 'accounts:register' %}" class="btn btn-light">Start learning today ↗</a>
+      <span class="cta-spark" aria-hidden="true">✳</span>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}Your quiz result · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <span class="eyebrow">EVERY ATTEMPT IS PROGRESS</span>
+  <h1>{% if attempt.passed %}Look how far you've come.{% else %}Keep your curiosity going.{% endif %}</h1>
+  <p>{{ attempt.quiz.title }} · {{ attempt.submitted_at|date:'M j, Y' }}</p>
+  <div class="panel result-panel mt-4">
+    <div class="score-circle {% if not attempt.passed %}score-retry{% endif %}">
+      <strong>{{ attempt.percentage }}<small>%</small>
+      </strong>
+      <span>{{ attempt.score }} / {{ attempt.maximum_score }} marks</span>
+    </div>
+    <div>
+      <span class="badge-status {% if attempt.passed %}success{% else %}warning{% endif %}">
+        {% if attempt.passed %}Passed{% elif attempt.timed_out %}Time expired{% else %}Not passed yet{% endif %}
+      </span>
+      <h2>
+        {% if attempt.passed %}That's a win worth celebrating.{% else %}A new chance to make it click.{% endif %}
+      </h2>
+      <p>Passing threshold: {{ attempt.passing_percentage }}%. {% if attempt.timed_out %}This attempt was submitted after its deadline and received zero marks.{% else %}Review your answers below and revisit any lessons you'd like to practice.{% endif %}
+      </p>
+      <div class="d-flex flex-wrap gap-3">
+        {% if user.role == "student" %}
+          <a class="btn btn-primary"
+             href="{% url 'quizzes:take' attempt.quiz.pk %}">Try another attempt ↗</a>
+        {% endif %}
+        <a class="btn btn-outline-primary"
+           href="{{ attempt.quiz.course.get_absolute_url }}">Back to course</a>
+      </div>
+    </div>
+  </div>
+  <h2 class="mt-5 mb-4">Your answer review</h2>
+  {% for answer in attempt.answers.all %}
+    <article class="panel answer-review mb-3">
+      <span class="answer-symbol {% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
+        {% if answer.is_correct %}✓{% else %}×{% endif %}
+      </span>
+      <div>
+        <h3>{{ answer.question_text }}</h3>
+        <p>Your answer: {{ answer.choice_text }}</p>
+        <small>{{ answer.awarded_marks }} marks awarded</small>
+      </div>
+    </article>
+  {% endfor %}
+{% endblock %}

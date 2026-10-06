@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Edit quiz question · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container section form-section">
+    <div class="form-shell">
+      <span class="eyebrow">{{ quiz.title }}</span>
+      <h1>Build a knowledge check.</h1>
+      <p>Add at least two choices and select exactly one correct answer.</p>
+      <form method="post">
+        {% csrf_token %}
+        {% include "includes/form_fields.html" %}
+        <h2>Answer choices</h2>{{ choices.management_form }}{% if choices.non_form_errors %}
+        <div class="alert alert-danger">{{ choices.non_form_errors }}</div>
+{% endif %}
+{% for choice_form in choices %}
+  <div class="choice-editor">
+    <h3>Choice {{ forloop.counter }}</h3>
+    {% for hidden in choice_form.hidden_fields %}{{ hidden }}{% endfor %}
+    {% for field in choice_form.visible_fields %}
+      <div class="mb-3">
+      {% if field.field.widget.input_type == "checkbox" %}{{ field }} <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% else %}
+      <label class="form-label"
+             for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}{{ field.errors }}</div>
+{% endfor %}
+</div>
+{% endfor %}
+<button class="btn btn-primary" type="submit">Save question ↗</button>
+<a class="btn btn-outline-primary"
+   href="{% url 'core:course_manage' quiz.course.pk %}">Cancel</a>
+</form>
+</div>
+</section>
+{% endblock %}

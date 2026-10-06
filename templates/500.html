@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container section error-page">
+    <span class="error-code">500</span>
+    <h1>A brief pause in the journey.</h1>
+    <p>Something went wrong on our side. Please try again in a moment.</p>
+    <a class="btn btn-primary" href="{% url 'core:home' %}">Back home ↗</a>
+  </section>
+{% endblock %}

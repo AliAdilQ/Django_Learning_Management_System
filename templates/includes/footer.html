@@ -1,0 +1,36 @@
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div>
+      <a class="brand" href="{% url 'core:home' %}">
+        <span class="brand-mark">✳</span> luma<span class="brand-dot">.</span>
+      </a>
+      <p>
+        A little curiosity. A lot of possibility.
+        <br>
+        Make learning part of your everyday.
+      </p>
+    </div>
+    <div>
+      <h3>Keep exploring</h3>
+      <a href="{% url 'courses:list' %}">All courses</a>
+      <a href="{% url 'courses:categories' %}">Learning paths</a>
+      <a href="{% url 'core:about' %}">About the project</a>
+    </div>
+    <div>
+      <h3>Your learning</h3>
+      <a href="{% url 'core:dashboard' %}">Dashboard</a>
+      <a href="{% url 'accounts:profile' %}">Your profile</a>
+      <a href="{% url 'core:contact' %}">Contact</a>
+    </div>
+    <div class="footer-note">
+      <span class="eyebrow">BUILT WITH CURIOSITY</span>
+      <p>A Django portfolio project by <a href="https://github.com/AliAdilQ">AliAdilQ</a>. All course content and learner activity are demonstration data.</p>
+      <a class="text-link"
+         href="https://github.com/AliAdilQ/Django_Learning_Management_System">Explore the source ↗</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {% now "Y" %} Luma Learning · MIT licensed</span>
+    <span>Python / Django / SQLite</span>
+  </div>
+</footer>

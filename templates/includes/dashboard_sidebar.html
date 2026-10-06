@@ -1,0 +1,36 @@
+<aside class="dashboard-sidebar">
+  <span class="eyebrow sidebar-label">
+    {% if user.is_instructor %}INSTRUCTOR STUDIO{% else %}YOUR WORKSPACE{% endif %}
+  </span>
+  <a class="side-link {% if 'dashboard' in request.resolver_match.url_name %}selected{% endif %}"
+     href="{% url 'core:dashboard' %}">
+    <span aria-hidden="true">▦</span> Overview</a>
+  {% if user.is_instructor %}
+    <a class="side-link"
+       href="{% url 'core:instructor_dashboard' %}#my-courses">
+      <span aria-hidden="true">▤</span> My courses</a>
+  {% else %}
+    <a class="side-link"
+       href="{% url 'core:student_dashboard' %}#my-courses">
+      <span aria-hidden="true">▤</span> My learning</a>
+  {% endif %}
+  <a class="side-link" href="{% url 'assignments:list' %}">
+    <span aria-hidden="true">□</span> Assignments</a>
+  <a class="side-link" href="{% url 'quizzes:list' %}">
+    <span aria-hidden="true">◈</span> Quizzes & results</a>
+  <a class="side-link" href="{% url 'accounts:profile' %}">
+    <span aria-hidden="true">◉</span> My profile</a>
+  <div class="sidebar-promo">
+    <span class="mini-spark" aria-hidden="true">✳</span>
+    <h3>Stay curious.</h3>
+    <p>Your next breakthrough starts with one small step.</p>
+    <a href="{% url 'courses:list' %}">Explore courses ↗</a>
+  </div>
+  <div class="sidebar-user">
+    <span class="avatar">{{ user.initials }}</span>
+    <div>
+      <strong>{{ user.display_name }}</strong>
+      <small>{{ user.get_role_display }}</small>
+    </div>
+  </div>
+</aside>

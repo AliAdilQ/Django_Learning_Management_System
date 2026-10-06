@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} · Luma Learning{% endblock %}
+{% block content %}
+  <div class="container section lesson-layout">
+    <aside class="lesson-sidebar">
+      <a class="text-link" href="{{ course.get_absolute_url }}">← Back to course</a>
+      <h2>{{ course.title }}</h2>
+      {% if enrollment %}
+        <div class="progress-label">
+          <span>Course progress</span>
+          <strong>{{ enrollment.progress }}%</strong>
+        </div>
+        <div class="progress mb-4">
+          <div class="progress-bar" style="width:{{ enrollment.progress }}%"></div>
+        </div>
+      {% endif %}
+      {% for module in modules %}
+        <h3 class="lesson-module">{{ forloop.counter|stringformat:'02d' }} · {{ module.title }}</h3>
+        {% for item in module.lessons.all %}
+          {% if item.is_published %}
+            <a class="lesson-nav {% if item.pk == lesson.pk %}current{% endif %}"
+               href="{{ item.get_absolute_url }}">
+              <span>{% if item.pk in completed %}✓{% else %}○{% endif %}</span>
+              <span>{{ item.title }}<small>{{ item.duration }} min</small>
+              </span>
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+      <a class="btn btn-outline-primary w-100 mt-4"
+         href="{{ course.get_absolute_url }}#activities">Assignments & quizzes ↗</a>
+    </aside>
+    <article class="lesson-content">
+      <span class="eyebrow">{{ lesson.module.title }} · {{ lesson.duration }} MIN READ</span>
+      <h1>{{ lesson.title }}</h1>
+      <div class="lesson-cover">
+        <span class="lesson-cover-symbol">⌘</span>
+        <div>
+          <span class="eyebrow">MAKE IT CLICK</span>
+          <h2>
+            A new idea.
+            <br>
+            A little more possibility.
+          </h2>
+        </div>
+        <span class="lesson-cover-spark">✳</span>
+      </div>
+      {% if lesson.video_url %}
+        <a class="btn btn-outline-primary mb-4"
+           href="{{ lesson.video_url }}"
+           target="_blank"
+           rel="noopener noreferrer">Watch the lesson video ↗</a>
+      {% endif %}
+      <div class="prose lesson-prose">{{ lesson.content|linebreaks }}</div>
+      <div class="lesson-completion">
+        {% if user.role == "student" %}
+          {% if lesson.pk in completed %}
+            <span class="completion-status">✓ You've completed this lesson</span>
+          {% else %}
+            <form method="post"
+                  action="{% url 'courses:complete_lesson' course.slug lesson.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-primary" type="submit">Mark as completed ✓</button>
+            </form>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="lesson-pagination">
+        {% if previous %}
+          <a href="{{ previous.get_absolute_url }}">← Previous lesson<small>{{ previous.title }}</small>
+          </a>
+        {% endif %}
+        {% if next_lesson %}
+          <a class="ms-auto text-end"
+             href="{{ next_lesson.get_absolute_url }}">Next lesson →<small>{{ next_lesson.title }}</small>
+          </a>
+        {% else %}
+          <a class="ms-auto" href="{{ course.get_absolute_url }}#activities">Try an assignment →</a>
+        {% endif %}
+      </div>
+    </article>
+  </div>
+{% endblock %}

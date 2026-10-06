@@ -1,0 +1,138 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}Instructor studio · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <div class="dashboard-heading">
+    <div>
+      <span class="eyebrow">INSTRUCTOR STUDIO</span>
+      <h1>
+        Make an impact, {{ user.first_name|default:user.username }}<span class="welcome-spark">✳</span>
+      </h1>
+      <p>Your ideas. Their next breakthrough. Let's build something meaningful.</p>
+    </div>
+    <a class="btn btn-primary" href="{% url 'core:course_create' %}">Create a course +</a>
+  </div>
+  <div class="stat-cards">
+    <div class="stat-card">
+      <span class="stat-icon sage">▤</span>
+      <span>Your courses</span>
+      <strong>{{ stats.courses|stringformat:'02d' }}</strong>
+      <small>Ideas brought to life</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon peach">◎</span>
+      <span>Unique students</span>
+      <strong>{{ stats.students|stringformat:'02d' }}</strong>
+      <small>Curious minds reached</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon lavender">▥</span>
+      <span>Total lessons</span>
+      <strong>{{ stats.lessons|stringformat:'02d' }}</strong>
+      <small>Steps toward possibility</small>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon yellow">□</span>
+      <span>Assignments</span>
+      <strong>{{ stats.assignments|stringformat:'02d' }}</strong>
+      <small>Learning put into practice</small>
+    </div>
+  </div>
+  <div class="studio-banner">
+    <div>
+      <span class="eyebrow">A LITTLE GUIDANCE GOES A LONG WAY</span>
+      <h2>
+        Share what you know.
+        <br>
+        Inspire what comes next.
+      </h2>
+    </div>
+    <span aria-hidden="true">✳</span>
+  </div>
+  <section class="panel" id="my-courses">
+    <div class="section-heading small-heading">
+      <h2>Your course collection</h2>
+      <span>{{ stats.courses }} courses</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table modern-table">
+        <thead>
+          <tr>
+            <th>Course</th>
+            <th>Status</th>
+            <th>Learners</th>
+            <th>Lessons</th>
+            <th>Rating</th>
+            <th>
+              <span class="visually-hidden">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+            <tr>
+              <td>
+                <a class="table-course" href="{% url 'core:course_manage' course.pk %}">{{ course.title }}</a>
+                <small>{{ course.category.name }}</small>
+              </td>
+              <td>
+                <span class="badge-status {% if course.is_published %}success{% else %}warning{% endif %}">
+                  {% if course.is_published %}Published{% else %}Draft{% endif %}
+                </span>
+              </td>
+              <td>{{ course.student_count }}</td>
+              <td>{{ course.lesson_count }}</td>
+              <td class="rating">★ {{ course.average_rating|default_if_none:0|floatformat:1 }}</td>
+              <td>
+                <a class="btn btn-outline-primary btn-sm"
+                   href="{% url 'core:course_manage' course.pk %}">Manage ↗</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6"
+                  class="empty-cell">Your ideas deserve a course. Create your first one above.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <div class="row g-4 mt-1">
+    <div class="col-xl-6">
+      <div class="panel">
+        <h2 class="panel-title">Recent enrollments</h2>
+        {% for enrollment in enrollments %}
+          <div class="enrollment-row">
+            <span class="avatar lavender">{{ enrollment.student.initials }}</span>
+            <div>
+              <strong>{{ enrollment.student.display_name }}</strong>
+              <small>{{ enrollment.course.title }}</small>
+            </div>
+            <small class="ms-auto">{{ enrollment.enrolled_at|date:'M j' }}</small>
+          </div>
+        {% empty %}
+          <p class="text-muted">Your first learners will appear here.</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-xl-6">
+      <div class="panel">
+        <h2 class="panel-title">Ready for your feedback</h2>
+        {% for submission in submissions %}
+          <a class="feedback-item"
+             href="{% url 'assignments:grade' submission.pk %}">
+            <span class="stat-icon peach">□</span>
+            <div>
+              <strong>{{ submission.assignment.title }}</strong>
+              <small>{{ submission.student.display_name }} · {{ submission.submitted_at|date:'M j' }}</small>
+            </div>
+            <span class="ms-auto">↗</span>
+          </a>
+        {% empty %}
+          <div class="empty-state small-empty">No ungraded submissions. You're all caught up.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

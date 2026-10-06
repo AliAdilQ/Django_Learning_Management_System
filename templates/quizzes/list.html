@@ -1,0 +1,67 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}Quizzes & results · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <span class="eyebrow">TURN LEARNING INTO CONFIDENCE</span>
+  <h1>Make it click.</h1>
+  <p class="section-intro">A quick check-in with what you know. Every attempt is a chance to grow.</p>
+  <div class="row g-4 mt-1">
+    {% for quiz in quizzes %}
+      <div class="col-md-6 col-xl-4">
+        <article class="panel quiz-card">
+          <span class="stat-icon lavender">◈</span>
+          <span class="eyebrow">{{ quiz.course.title }}</span>
+          <h2>{{ quiz.title }}</h2>
+          <p>{{ quiz.description }}</p>
+          <small>{{ quiz.questions.count }} questions · {{ quiz.passing_percentage }}% to pass · {% if quiz.time_limit %}{{ quiz.time_limit }} min{% else %}Self-paced{% endif %}
+          </small>
+          {% if user.role == "student" %}
+            <a class="btn btn-primary mt-3" href="{% url 'quizzes:take' quiz.pk %}">Open quiz ↗</a>
+          {% elif user.is_instructor %}
+            <a class="btn btn-outline-primary mt-3"
+               href="{% url 'core:course_manage' quiz.course.pk %}">Manage quiz ↗</a>
+          {% endif %}
+        </article>
+      </div>
+    {% empty %}
+      <div class="empty-state">No quizzes available. Your course knowledge checks will appear here.</div>
+    {% endfor %}
+  </div>
+  {% if user.role == "student" %}
+    <div class="panel mt-5">
+      <h2>Your previous attempts</h2>
+      <div class="table-responsive">
+        <table class="table modern-table">
+          <thead>
+            <tr>
+              <th>Quiz</th>
+              <th>Date</th>
+              <th>Score</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for attempt in attempts %}
+              <tr>
+                <td>
+                  <a href="{% url 'quizzes:result' attempt.pk %}">{{ attempt.quiz.title }}</a>
+                </td>
+                <td>{{ attempt.submitted_at|date:'M j, Y' }}</td>
+                <td>{{ attempt.percentage }}%</td>
+                <td>
+                  <span class="badge-status {% if attempt.passed %}success{% else %}warning{% endif %}">
+                    {% if attempt.passed %}Passed{% else %}Try again{% endif %}
+                  </span>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="4" class="empty-cell">No attempts yet. Start a quiz above.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

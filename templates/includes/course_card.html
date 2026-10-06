@@ -1,0 +1,38 @@
+{% load static %}
+
+<article class="course-card">
+  <a class="course-art"
+     href="{{ course.get_absolute_url }}"
+     aria-label="Explore {{ course.title }}">
+    {% if course.thumbnail %}
+      <img src="{{ course.thumbnail.url }}"
+           alt="{{ course.title }} course cover"
+           loading="lazy">
+    {% else %}
+      {% with art="images/courses/"|add:course.artwork|add:".svg" %}
+        <img src="{% static art %}"
+             alt="{{ course.category.name }} illustrated course cover"
+             loading="lazy">
+      {% endwith %}
+    {% endif %}
+    <span class="level-pill">{{ course.get_difficulty_display }}</span>
+    <span class="art-arrow" aria-hidden="true">↗</span>
+  </a>
+  <div class="course-card-body">
+    <div class="course-meta">
+      <span>{{ course.category.name }}</span>
+      <span class="rating">★ {{ course.average_rating|default_if_none:0|floatformat:1 }}</span>
+    </div>
+    <h3>
+      <a href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+    </h3>
+    <p>{{ course.short_description }}</p>
+    <div class="course-instructor">
+      <span class="avatar avatar-xs">{{ course.instructor.initials }}</span>{{ course.instructor.display_name }}
+    </div>
+    <div class="course-card-bottom">
+      <span>▤ {{ course.lesson_count }} lessons <span class="dot-separator">·</span> {{ course.duration }}h</span>
+      <span>{{ course.student_count }} learners</span>
+    </div>
+  </div>
+</article>

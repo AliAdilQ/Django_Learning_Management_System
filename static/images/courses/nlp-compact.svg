@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="160 0 300 245" role="img" aria-label="LANGUAGE &amp; AI course illustration">
+    <rect width="640" height="360" fill="#efdcca"/>
+    <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#a47955" stroke-opacity=".06"/></pattern></defs><rect width="640" height="360" fill="url(#grid)"/>
+    <circle cx="306" cy="122" r="126" fill="none" stroke="#a47955" stroke-opacity=".12"/>
+    <g transform="translate(2 14)"><g transform="translate(178 51) rotate(-5 115 70)"><path d="M16 0h165q16 0 16 16v81q0 16-16 16H68l-35 23v-23H16Q0 113 0 97V16Q0 0 16 0" fill="#fbf5e8" stroke="#d4b598"/><path d="M27 28h110m-110 21h139m-139 21h81" stroke="#af9173" stroke-width="7" stroke-linecap="round"/><rect x="116" y="73" width="125" height="95" rx="14" fill="#a67a57"/><text x="144" y="138" fill="#fceede" font-family="Georgia" font-size="47">Aa</text></g></g>
+    <text x="32" y="283" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" fill="#a47955" opacity=".8">06 / WORDS INTO INSIGHT</text>
+    <text x="32" y="322" font-family="Arial,sans-serif" font-size="27" font-weight="bold" letter-spacing="-.5" fill="#a47955">LANGUAGE &amp; AI</text>
+    <path d="M567 54v32m-16-16h32m-27-11 22 22m-22 0 22-22" stroke="#a47955" stroke-opacity=".6" stroke-width="4"/>
+    <text x="556" y="320" font-family="Arial,sans-serif" font-size="12" fill="#a47955" opacity=".5">luma.</text></svg>

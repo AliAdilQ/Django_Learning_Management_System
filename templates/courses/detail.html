@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ course.title }} · Luma Learning{% endblock %}
+{% block content %}
+  <section class="course-detail-header">
+    <div class="container">
+      <nav class="breadcrumb-line" aria-label="Breadcrumb">
+        <a href="{% url 'courses:list' %}">Courses</a>
+        <span>/</span>
+        <a href="{% url 'courses:list' %}?category={{ course.category.slug }}">{{ course.category.name }}</a>
+      </nav>
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="pill">{{ course.category.name }}</span>
+            <span class="pill pill-light">{{ course.get_difficulty_display }}</span>
+            {% if not course.is_published %}
+              <span class="pill pill-orange">Draft</span>
+            {% endif %}
+          </div>
+          <h1>{{ course.title }}</h1>
+          <p class="lead">{{ course.short_description }}</p>
+          <div class="detail-meta">
+            <span class="avatar peach">{{ course.instructor.initials }}</span>
+            <span>Created by <strong>{{ course.instructor.display_name }}</strong>
+            </span>
+            <span class="rating">★ {{ course.average_rating|default_if_none:0|floatformat:1 }}</span>
+            <span>{{ course.student_count }} learners</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="container section detail-layout">
+    <div class="detail-body">
+      <div class="detail-tabs">
+        <a href="#overview">Overview</a>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#reviews">Reviews</a>
+        {% if can_study %}
+          <a href="#activities">Activities</a>
+        {% endif %}
+      </div>
+      <section id="overview" class="detail-section">
+        <span class="eyebrow">YOUR NEXT CHAPTER</span>
+        <h2>About this course</h2>
+        <div class="prose">{{ course.description|linebreaks }}</div>
+        <div class="learning-points">
+          <div>
+            <span>✓</span> Structured, practical lessons
+          </div>
+          <div>
+            <span>✓</span> Assignments with feedback
+          </div>
+          <div>
+            <span>✓</span> Knowledge-check quizzes
+          </div>
+          <div>
+            <span>✓</span> Progress at your own pace
+          </div>
+        </div>
+      </section>
+      <section id="curriculum" class="detail-section">
+        <div class="section-heading small-heading">
+          <h2>Course curriculum</h2>
+          <span>{{ course.lesson_count }} lessons · {{ course.duration }} hours</span>
+        </div>
+        <div class="accordion" id="curriculum-list">
+          {% for module in course.modules.all %}
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#module-{{ module.pk }}"
+                        aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                        aria-controls="module-{{ module.pk }}">
+                  <span class="module-number">{{ forloop.counter|stringformat:'02d' }}</span>{{ module.title }}
+                </button>
+              </h3>
+              <div id="module-{{ module.pk }}"
+                   class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
+                <div class="accordion-body">
+                  {% for lesson in module.lessons.all %}
+                    {% if lesson.is_published %}
+                      <div class="curriculum-lesson">
+                        <span>▤</span>
+                        {% if can_study %}
+                          <a href="{{ lesson.get_absolute_url }}">{{ lesson.title }}</a>
+                        {% else %}
+                          <span>{{ lesson.title }}</span>
+                        {% endif %}
+                        <small>{{ lesson.duration }} min {% if not can_study %}· Enroll to unlock{% endif %}</small>
+                      </div>
+                    {% endif %}
+                  {% empty %}
+                    <p class="text-muted">Lessons are being prepared.</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="empty-state">The instructor is preparing this curriculum.</div>
+          {% endfor %}
+        </div>
+      </section>
+      {% if can_study %}
+        <section id="activities" class="detail-section">
+          <h2>Put your learning to work</h2>
+          <div class="row g-3">
+            {% for assignment in course.assignments.all %}
+              <div class="col-md-6">
+                <a class="activity-card"
+                   href="{% url 'assignments:detail' assignment.pk %}">
+                  <span class="eyebrow">ASSIGNMENT · {{ assignment.maximum_marks }} MARKS</span>
+                  <h3>{{ assignment.title }}</h3>
+                  <small>Due {{ assignment.due_date|date:'M j, Y' }} ↗</small>
+                </a>
+              </div>
+            {% endfor %}
+            {% if user.role == "student" %}
+              {% for quiz in course.quizzes.all %}
+                <div class="col-md-6">
+                  <a class="activity-card" href="{% url 'quizzes:take' quiz.pk %}">
+                    <span class="eyebrow">KNOWLEDGE CHECK</span>
+                    <h3>{{ quiz.title }}</h3>
+                    <small>{{ quiz.passing_percentage }}% to pass ↗</small>
+                  </a>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+          {% for announcement in course.announcements.all %}
+            <div class="announcement mt-3">
+              <span class="eyebrow">COURSE UPDATE · {{ announcement.created_at|date:'M j' }}</span>
+              <h3>{{ announcement.title }}</h3>
+              <p>{{ announcement.content }}</p>
+            </div>
+          {% endfor %}
+        </section>
+      {% endif %}
+      <section id="reviews" class="detail-section">
+        <div class="section-heading small-heading">
+          <h2>Learner reflections</h2>
+          <span class="rating">★ {{ course.average_rating|default_if_none:0|floatformat:1 }} / 5</span>
+        </div>
+        {% for review in reviews %}
+          <article class="review">
+            <span class="avatar lavender">{{ review.student.initials }}</span>
+            <div>
+              <strong>{{ review.student.display_name }}</strong>
+              <span class="rating ms-3">★ {{ review.rating }}.0</span>
+              <p>{{ review.text }}</p>
+              <small>{{ review.created_at|date:'M j, Y' }} · Demo content may be seeded</small>
+            </div>
+          </article>
+        {% empty %}
+          <div class="empty-state">Be the first to share your learning experience.</div>
+        {% endfor %}
+        {% if enrollment %}
+          <div class="panel mt-4">
+            <h3>Share your experience</h3>
+            <form method="post" action="{% url 'courses:review' course.slug %}">
+              {% csrf_token %}
+              {% include "includes/form_fields.html" with form=review_form %}
+              <button class="btn btn-primary" type="submit">Save review ↗</button>
+            </form>
+          </div>
+        {% endif %}
+      </section>
+    </div>
+    <aside class="enrollment-panel">
+      <div class="course-art">
+        {% if course.thumbnail %}
+          <img src="{{ course.thumbnail.url }}"
+               alt="{{ course.title }} course cover">
+        {% else %}
+          {% with art="images/courses/"|add:course.artwork|add:".svg" %}
+            <img src="{% static art %}" alt="Illustrated course cover">
+          {% endwith %}
+        {% endif %}
+      </div>
+      <div class="enrollment-content">
+        <span class="eyebrow">INVEST IN YOUR CURIOSITY</span>
+        <h2>Made for your next step.</h2>
+        <p>Free access in this portfolio demo.</p>
+        {% if enrollment %}
+          <div class="progress-label">
+            <span>Your progress</span>
+            <strong>{{ enrollment.progress }}%</strong>
+          </div>
+          <div class="progress mb-4">
+            <div class="progress-bar" style="width:{{ enrollment.progress }}%"></div>
+          </div>
+          {% if first_lesson %}
+            <a class="btn btn-primary w-100"
+               href="{{ first_lesson.get_absolute_url }}">Continue learning ↗</a>
+          {% else %}
+            <p>Lessons are being prepared.</p>
+          {% endif %}
+        {% elif can_study and first_lesson %}
+          <a class="btn btn-primary w-100"
+             href="{{ first_lesson.get_absolute_url }}">Preview lessons ↗</a>
+        {% elif user.is_authenticated and user.role == "student" %}
+          <form method="post" action="{% url 'courses:enroll' course.slug %}">
+            {% csrf_token %}
+            <button class="btn btn-primary w-100" type="submit">Enroll in this course ↗</button>
+          </form>
+        {% elif not user.is_authenticated %}
+          <a class="btn btn-primary w-100"
+             href="{% url 'accounts:login' %}?next={{ course.get_absolute_url }}">Log in to enroll ↗</a>
+        {% else %}
+          <p class="muted-note">Enrollment is available to student accounts.</p>
+        {% endif %}
+        <ul class="course-facts">
+          <li>
+            <span>▤ Lessons</span>
+            <strong>{{ course.lesson_count }}</strong>
+          </li>
+          <li>
+            <span>◷ Learning time</span>
+            <strong>{{ course.duration }} hours</strong>
+          </li>
+          <li>
+            <span>▥ Level</span>
+            <strong>{{ course.get_difficulty_display }}</strong>
+          </li>
+          <li>
+            <span>◎ Access</span>
+            <strong>Self-paced</strong>
+          </li>
+        </ul>
+        <small class="muted-note">Keep going. Your progress is saved.</small>
+      </div>
+    </aside>
+  </section>
+{% endblock %}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="MACHINE LEARNING course illustration">
+    <rect width="640" height="360" fill="#e2def0"/>
+    <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#75688e" stroke-opacity=".06"/></pattern></defs><rect width="640" height="360" fill="url(#grid)"/>
+    <circle cx="306" cy="122" r="126" fill="none" stroke="#75688e" stroke-opacity=".12"/>
+    <g transform="translate(2 14)"><g stroke="#9e91b5" stroke-width="3"><path d="M218 66l91 51-91 61m0-112 0 112m91-61 87-51m-87 51 87 61m-178-112 178 112m-178 0 178-112" fill="none"/><circle cx="218" cy="66" r="20" fill="#faf7fd"/><circle cx="218" cy="178" r="20" fill="#faf7fd"/><circle cx="309" cy="117" r="30" fill="#796c94"/><circle cx="396" cy="66" r="20" fill="#c6bbdd"/><circle cx="396" cy="178" r="20" fill="#c6bbdd"/></g><path d="M296 117h26m-13-13v26" stroke="#f1e9fc" stroke-width="4"/></g>
+    <text x="32" y="283" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" fill="#75688e" opacity=".8">04 / FIND THE PATTERN</text>
+    <text x="32" y="322" font-family="Arial,sans-serif" font-size="27" font-weight="bold" letter-spacing="-.5" fill="#75688e">MACHINE LEARNING</text>
+    <path d="M567 54v32m-16-16h32m-27-11 22 22m-22 0 22-22" stroke="#75688e" stroke-opacity=".6" stroke-width="4"/>
+    <text x="556" y="320" font-family="Arial,sans-serif" font-size="12" fill="#75688e" opacity=".5">luma.</text></svg>

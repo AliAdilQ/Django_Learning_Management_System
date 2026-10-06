@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Learning categories · Luma Learning{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <div class="container">
+      <span class="eyebrow">FOLLOW YOUR INTERESTS</span>
+      <h1>
+        Where will curiosity <span class="serif-accent">take you?</span>
+      </h1>
+      <p>Explore six areas of code, data, and intelligent technology.</p>
+    </div>
+  </section>
+  <section class="container section">
+    <div class="row g-4">
+      {% for category in categories %}
+        <div class="col-md-6 col-lg-4">
+          <a class="category-tile category-large"
+             href="{% url 'courses:list' %}?category={{ category.slug }}">
+            <span class="category-symbol symbol-{{ forloop.counter }}">{% cycle '⌘' '◈' '◎' '▥' '✧' '☷' %}</span>
+            <h2>{{ category.name }}</h2>
+            <p>{{ category.description }}</p>
+            <small>{{ category.course_count }} courses <span>↗</span>
+            </small>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

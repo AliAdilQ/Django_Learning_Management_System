@@ -1,0 +1,80 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}{{ assignment.title }} · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <a class="text-link" href="{{ assignment.course.get_absolute_url }}">← {{ assignment.course.title }}</a>
+  <div class="dashboard-heading mt-4">
+    <div>
+      <span class="eyebrow">PRACTICAL ASSIGNMENT</span>
+      <h1>{{ assignment.title }}</h1>
+      <p>Due {{ assignment.due_date|date:'M j, Y · H:i' }} UTC · {{ assignment.maximum_marks }} maximum marks</p>
+    </div>
+    {% if submission %}
+      <span class="badge-status {% if submission.marks != None %}success{% else %}warning{% endif %}">{{ submission.status }}</span>
+    {% endif %}
+  </div>
+  <div class="panel">
+    <div class="prose">{{ assignment.description|linebreaks }}</div>
+  </div>
+  {% if user.role == "student" %}
+    <div class="panel mt-4">
+      {% if submission.marks != None and submission %}
+        <span class="eyebrow">INSTRUCTOR FEEDBACK</span>
+        <h2>{{ submission.marks }} / {{ assignment.maximum_marks }} marks</h2>
+        <p>{{ submission.feedback|default:'Your instructor has graded this assignment.' }}</p>
+        <h3>Your submission</h3>
+        <div class="submission-text">{{ submission.text|linebreaks }}</div>
+        {% if submission.file %}
+          <a class="text-link"
+             href="{% url 'assignments:download' submission.pk %}">Download your file ↗</a>
+        {% endif %}
+      {% else %}
+        <h2>{% if submission %}Update your submission{% else %}Share your work{% endif %}</h2>
+        <p class="text-muted">Late submissions are accepted and flagged. You can update your work until it is graded.</p>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% include "includes/form_fields.html" %}
+          <button class="btn btn-primary" type="submit">Submit assignment ↗</button>
+        </form>
+        {% if submission.file %}
+          <a class="text-link mt-3 d-inline-block"
+             href="{% url 'assignments:download' submission.pk %}">Download current file ↗</a>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="panel mt-4">
+      <h2>Student submissions</h2>
+      <div class="table-responsive">
+        <table class="table modern-table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Submitted</th>
+              <th>Status</th>
+              <th>Marks</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in submissions %}
+              <tr>
+                <td>{{ item.student.display_name }}</td>
+                <td>{{ item.submitted_at|date:'M j, Y' }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.marks|default_if_none:'—' }}</td>
+                <td>
+                  <a class="text-link" href="{% url 'assignments:grade' item.pk %}">Review ↗</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="empty-cell">No submissions yet.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

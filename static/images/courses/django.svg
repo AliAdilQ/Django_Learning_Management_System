@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="DJANGO course illustration">
+    <rect width="640" height="360" fill="#d4e5d7"/>
+    <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#265447" stroke-opacity=".06"/></pattern></defs><rect width="640" height="360" fill="url(#grid)"/>
+    <circle cx="306" cy="122" r="126" fill="none" stroke="#265447" stroke-opacity=".12"/>
+    <g transform="translate(2 14)"><g transform="translate(190 56) rotate(7 100 80)"><rect width="210" height="135" rx="14" fill="#255346"/><rect x="14" y="15" width="182" height="17" rx="4" fill="#ffffff13"/><circle cx="25" cy="24" r="3" fill="#bbceaf"/><circle cx="36" cy="24" r="3" fill="#e5be87"/><text x="31" y="104" fill="#d6e8c7" font-family="Georgia" font-size="68" font-weight="bold">dj.</text><path d="M124 60h46m-46 16h31m-31 16h42" stroke="#88b196" stroke-width="5" stroke-linecap="round"/></g></g>
+    <text x="32" y="283" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" fill="#265447" opacity=".8">02 / BUILD SOMETHING REAL</text>
+    <text x="32" y="322" font-family="Arial,sans-serif" font-size="27" font-weight="bold" letter-spacing="-.5" fill="#265447">DJANGO</text>
+    <path d="M567 54v32m-16-16h32m-27-11 22 22m-22 0 22-22" stroke="#265447" stroke-opacity=".6" stroke-width="4"/>
+    <text x="556" y="320" font-family="Arial,sans-serif" font-size="12" fill="#265447" opacity=".5">luma.</text></svg>

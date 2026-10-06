@@ -1,0 +1,25 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}Grade submission · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <span class="eyebrow">MAKE FEEDBACK MEANINGFUL</span>
+  <h1>{{ submission.student.display_name }}'s submission</h1>
+  <p>{{ submission.assignment.title }} · {{ submission.status }} · Maximum {{ submission.assignment.maximum_marks }} marks</p>
+  <div class="panel mt-4">
+    <div class="submission-text">{{ submission.text|linebreaks }}</div>
+    {% if submission.file %}
+      <a class="btn btn-outline-primary"
+         href="{% url 'assignments:download' submission.pk %}">Download submission ↗</a>
+    {% endif %}
+  </div>
+  <div class="panel mt-4">
+    <h2>Grade & feedback</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <button class="btn btn-primary" type="submit">Save feedback ↗</button>
+      <a class="btn btn-outline-primary"
+         href="{% url 'assignments:detail' submission.assignment.pk %}">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

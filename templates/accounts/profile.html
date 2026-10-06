@@ -1,0 +1,42 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}Your profile · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <span class="eyebrow">A LITTLE ABOUT YOU</span>
+  <h1>Your learning identity.</h1>
+  <div class="panel profile-panel mt-4">
+    <div class="profile-top">
+      {% if user.profile.avatar %}
+        <img class="profile-avatar"
+             src="{{ user.profile.avatar.url }}"
+             alt="Profile photo of {{ user.display_name }}">
+      {% else %}
+        <span class="avatar avatar-xl peach">{{ user.initials }}</span>
+      {% endif %}
+      <div>
+        <h2>{{ user.display_name }}</h2>
+        <p>{{ user.profile.headline|default:'A curious mind, always learning.' }}</p>
+        <span class="pill">{{ user.get_role_display }}</span>
+      </div>
+    </div>
+    <div class="profile-details">
+      <div>
+        <span class="eyebrow">EMAIL</span>
+        <p>{{ user.email }}</p>
+      </div>
+      <div>
+        <span class="eyebrow">MEMBER SINCE</span>
+        <p>{{ user.date_joined|date:'F Y' }}</p>
+      </div>
+      <div>
+        <span class="eyebrow">BIO</span>
+        <div>{{ user.profile.bio|default:'Tell the community a little about yourself.'|linebreaks }}</div>
+      </div>
+    </div>
+    <div class="d-flex gap-3 flex-wrap">
+      <a class="btn btn-primary" href="{% url 'accounts:edit_profile' %}">Edit profile ↗</a>
+      <a class="btn btn-outline-primary"
+         href="{% url 'accounts:password_change' %}">Change password</a>
+    </div>
+  </div>
+{% endblock %}

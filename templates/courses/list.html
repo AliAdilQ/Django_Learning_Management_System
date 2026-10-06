@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Explore courses · Luma Learning{% endblock %}
+{% block content %}
+  <section class="page-header compact">
+    <div class="container">
+      <div class="header-line">
+        <span class="eyebrow">A LITTLE CURIOSITY GOES A LONG WAY</span>
+        <span class="pill">{{ page_obj.paginator.count }} courses to explore</span>
+      </div>
+      <h1>
+        Find your next <span class="serif-accent">possibility.</span>
+      </h1>
+      <p>From your first line of code to your next big idea. There's a course for that.</p>
+    </div>
+  </section>
+  <section class="container section pt-4">
+    <form class="filter-bar" method="get" action="{% url 'courses:list' %}">
+      <div class="search-field">
+        <label class="visually-hidden" for="course-search">Search courses</label>
+        <span aria-hidden="true">⌕</span>
+        <input id="course-search"
+               class="form-control"
+               name="q"
+               value="{{ query }}"
+               placeholder="What do you want to learn?">
+      </div>
+      <div>
+        <label class="visually-hidden" for="category-filter">Category</label>
+        <select class="form-select" name="category" id="category-filter">
+          <option value="">All categories</option>
+          {% for category in categories %}
+            <option value="{{ category.slug }}"
+                    {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="visually-hidden" for="level-filter">Difficulty</label>
+        <select class="form-select" name="difficulty" id="level-filter">
+          <option value="">All levels</option>
+          {% for value,label in difficulties %}
+            <option value="{{ value }}"
+                    {% if selected_difficulty == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="visually-hidden" for="sort-filter">Sort courses</label>
+        <select class="form-select" name="sort" id="sort-filter">
+          <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
+          <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Most popular</option>
+          <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Highest rated</option>
+          <option value="title" {% if sort == 'title' %}selected{% endif %}>Title A–Z</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Find courses</button>
+    </form>
+    <div class="results-line">
+      <span>{{ page_obj.paginator.count }} course{{ page_obj.paginator.count|pluralize }}{% if query %} matching “{{ query }}”{% endif %}
+      </span>
+      <a href="{% url 'courses:list' %}" class="text-link">Reset filters ↻</a>
+    </div>
+    <div class="row g-4">
+      {% for course in page_obj %}
+        <div class="col-md-6 col-lg-4">{% include "includes/course_card.html" %}</div>
+      {% empty %}
+        <div class="empty-state">
+          <span>⌕</span>
+          <h2>No courses found.</h2>
+          <p>Try a different search or clear your filters to discover something new.</p>
+          <a class="btn btn-primary" href="{% url 'courses:list' %}">Explore all courses</a>
+        </div>
+      {% endfor %}
+    </div>
+    {% if page_obj.has_other_pages %}
+      <nav class="pagination-wrap" aria-label="Course pages">
+        {% if page_obj.has_previous %}
+          <a class="btn btn-outline-primary"
+             href="?{{ querystring }}&page={{ page_obj.previous_page_number }}">← Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a class="btn btn-outline-primary"
+             href="?{{ querystring }}&page={{ page_obj.next_page_number }}">Next →</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  </section>
+{% endblock %}

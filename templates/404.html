@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container section error-page">
+    <span class="error-code">404</span>
+    <h1>A little off the learning path.</h1>
+    <p>We couldn't find that page. There's still a world of things to explore.</p>
+    <a class="btn btn-primary" href="{% url 'courses:list' %}">Explore courses ↗</a>
+    <a class="btn btn-outline-primary" href="{% url 'core:home' %}">Back home</a>
+  </section>
+{% endblock %}

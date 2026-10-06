@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="dashboard-layout container-fluid">
+    {% include "includes/dashboard_sidebar.html" %}
+    <div class="dashboard-main">
+      {% block dashboard_content %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

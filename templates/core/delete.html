@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ resource }} · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container section form-section">
+    <div class="form-shell">
+      <span class="eyebrow">INSTRUCTOR STUDIO</span>
+      <h1>Delete {{ resource }}?</h1>
+      <p>You are deleting <strong>{{ item }}</strong>. Related lessons, enrollments, submissions, or results belonging to this item will also be removed. This cannot be undone.</p>
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete permanently</button>
+        <a class="btn btn-outline-primary"
+           href="{% url 'core:course_manage' course.pk %}">Keep it</a>
+      </form>
+    </div>
+  </section>
+{% endblock %}

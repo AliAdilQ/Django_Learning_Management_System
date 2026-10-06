@@ -1,0 +1,60 @@
+{% extends "core/dashboard_base.html" %}
+
+{% block title %}{{ quiz.title }} · Luma Learning{% endblock %}
+{% block dashboard_content %}
+  <a class="text-link" href="{{ quiz.course.get_absolute_url }}">← {{ quiz.course.title }}</a>
+  <div class="dashboard-heading mt-4">
+    <div>
+      <span class="eyebrow">KNOWLEDGE CHECK</span>
+      <h1>{{ quiz.title }}</h1>
+      <p>{{ quiz.description }}</p>
+    </div>
+    {% if deadline %}
+      <span class="pill quiz-timer"
+            data-deadline="{{ deadline|date:'c' }}"
+            role="timer">Time remaining</span>
+    {% endif %}
+  </div>
+  {% if attempt %}
+    <form method="post" id="quiz-form">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="submit">
+      {% for field in form %}
+        <fieldset class="panel quiz-question mb-4">
+          <legend>
+            <span class="question-index">{{ forloop.counter|stringformat:'02d' }}</span> {{ field.label }}
+          </legend>
+          {% for radio in field %}
+            <label class="quiz-option" for="{{ radio.id_for_label }}">
+              {{ radio.tag }}<span>{{ radio.choice_label }}</span>
+            </label>
+          {% endfor %}
+          {% for error in field.errors %}
+            <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+        </fieldset>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Submit answers ↗</button>
+    </form>
+  {% else %}
+    <div class="panel quiz-start">
+      <span class="big-spark">◈</span>
+      <h2>A little check-in with your knowledge.</h2>
+      <p>{{ question_count }} questions · {{ quiz.passing_percentage }}% to pass · {% if quiz.time_limit %}{{ quiz.time_limit }} minutes{% else %}No time limit{% endif %}
+      </p>
+      <p>Choose one answer for every question. You can retake the quiz and each result is saved.</p>
+      {% if quiz.time_limit %}
+        <p class="text-muted">The timer starts when you begin. Attempts submitted after the deadline receive zero marks.</p>
+      {% endif %}
+      {% if ready %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="start">
+          <button class="btn btn-primary" type="submit">Start quiz ↗</button>
+        </form>
+      {% else %}
+        <p class="badge-status warning">Your instructor is preparing this quiz.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Start your next chapter · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container auth-layout">
+    <div class="auth-visual">
+      <span class="eyebrow">THERE'S MORE IN YOU</span>
+      <h2>
+        A fresh start.
+        <br>
+        A new skill.
+        <br>
+        <em>A bigger world.</em>
+      </h2>
+      <span class="auth-spark">✳</span>
+      <p>Build a learning habit that feels like you.</p>
+      <div class="auth-note">
+        <span>↗</span>
+        <div>
+          <strong>Curiosity is all you need.</strong>
+          <small>Start small. Keep growing.</small>
+        </div>
+      </div>
+    </div>
+    <div class="auth-form">
+      <span class="eyebrow">LET'S MAKE SOMETHING OF TODAY</span>
+      <h1>Your journey starts here.</h1>
+      <p>Create your student account. All demo courses are free.</p>
+      <form method="post">
+        {% csrf_token %}
+        {% include "includes/form_fields.html" %}
+        <button class="btn btn-primary w-100" type="submit">Create account ↗</button>
+      </form>
+      <p class="auth-switch">Already learning with us? <a href="{% url 'accounts:login' %}">Log in</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}

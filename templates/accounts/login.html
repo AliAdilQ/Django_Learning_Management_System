@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome back · Luma Learning{% endblock %}
+{% block content %}
+  <section class="container auth-layout">
+    <div class="auth-visual">
+      <span class="eyebrow">A LITTLE EVERY DAY</span>
+      <h2>
+        Your next chapter
+        <br>
+        is waiting.
+        <br>
+        <em>Let's begin.</em>
+      </h2>
+      <span class="auth-spark" aria-hidden="true">✳</span>
+      <p>Pick up where curiosity left off.</p>
+      <div class="auth-note">
+        <span>✓</span>
+        <div>
+          <strong>Progress, saved.</strong>
+          <small>Every step brings you closer.</small>
+        </div>
+      </div>
+    </div>
+    <div class="auth-form">
+      <span class="eyebrow">GOOD TO SEE YOU AGAIN</span>
+      <h1>Welcome back.</h1>
+      <p>Log in and make a little room for learning.</p>
+      <form method="post">
+        {% csrf_token %}
+        {% include "includes/form_fields.html" %}
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        <button class="btn btn-primary w-100" type="submit">Log in ↗</button>
+      </form>
+      <p class="auth-switch">New to Luma? <a href="{% url 'accounts:register' %}">Create an account</a>
+      </p>
+      {% if demo_mode %}
+        <div class="demo-hint">
+          <strong>Exploring the portfolio?</strong>
+          <p>Use <code>student1</code> / <code>Student123!</code> or <code>instructor1</code> / <code>Instructor123!</code> after running the demo seed command. Development accounts only.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

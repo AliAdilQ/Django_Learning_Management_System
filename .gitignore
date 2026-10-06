@@ -1,0 +1,31 @@
+# Python and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+# Local configuration, data, uploads, and generated static output
+.env
+.env.*
+!.env.example
+db.sqlite3
+db.sqlite3-*
+media/
+private_uploads/
+staticfiles/
+*.log
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+# Temporary browser/build artifacts
+node_modules/
+test-results/
+playwright-report/
+.artifacts/

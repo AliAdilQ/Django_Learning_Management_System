@@ -1,0 +1,7 @@
+{
+  "name": "django-learning-management-system-browser-checks",
+  "private": true,
+  "description": "Optional browser verification and real README screenshot capture",
+  "scripts": {"test:browser": "node tools/browser_check.cjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}
